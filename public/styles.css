@@ -1,0 +1,15 @@
+.hov:hover {
+    background-color: rgb(201, 193, 209);
+}
+
+.basicstyle {
+    cursor: pointer;
+}
+
+
+.libasic {
+    display: flex;
+    justify-content: space-between;
+    font-family: sans-serif;
+    font-size:1.2rem;
+}
