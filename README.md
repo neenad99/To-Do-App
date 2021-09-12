@@ -1,7 +1,7 @@
 # To-do App
-A To-do app using Nodejs , express , mangodb
+A To-do app using Nodejs , express , mongodb
 
-This repository contains code for To-do App using Nodejs , express , mangodb
+This repository contains code for To-do App using Nodejs , express , mongodb
 
 Technology used : -Nodejs -express 
 
