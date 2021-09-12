@@ -4,7 +4,7 @@
   "description": "A simple to do app with crud db operation",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",

@@ -2,8 +2,8 @@ const addbtn = document.querySelector("#addTask");
 const inputTask = document.querySelector('#inputTask');
 const tasklist = document.querySelector('#tasklist');
 
-// const host = "http://localhost:3000";
-const host = "https://to-do-project-app.herokuapp.com"; // enter your heroku app url here
+// const host = "http://localhost:YOUR_PORT_NO"; enter your port no here for local setup
+// const host =  enter your heroku app url here
 
 function showalert(message,status){
     const div = document.createElement('div');
