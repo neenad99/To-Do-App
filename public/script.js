@@ -3,7 +3,7 @@ const inputTask = document.querySelector('#inputTask');
 const tasklist = document.querySelector('#tasklist');
 
 // const host = "http://localhost:3000";
-const host = "https://to-do-project-app.herokuapp.com";
+const host = "https://to-do-project-app.herokuapp.com"; // enter your heroku app url here
 
 function showalert(message,status){
     const div = document.createElement('div');
@@ -77,7 +77,7 @@ addbtn.addEventListener('click',(e)=>{
         },
         body:JSON.stringify({content:inputTask.value,status:'not done'})
     });
-
+    inputTask.value = '';
     fetch(request).then((resp)=>resp.json().then((res)=>{
         getTasks();
     }).catch((err)=>{showalert("some error occured try again or reload page","fail");}));
