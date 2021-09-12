@@ -2,7 +2,8 @@ const addbtn = document.querySelector("#addTask");
 const inputTask = document.querySelector('#inputTask');
 const tasklist = document.querySelector('#tasklist');
 
-const host = "http://localhost:3000";
+// const host = "http://localhost:3000";
+const host = "https://to-do-project-app.herokuapp.com/";
 
 function showalert(message,status){
     const div = document.createElement('div');
