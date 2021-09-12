@@ -30,5 +30,5 @@ Nodemon
 * Run by ``` npm start  ```
 
 # Demo
-[VIEW DEMO](https://to-do-project-app.herokuapp.com/)
+This Project is hosted on HEROKU [VIEW DEMO](https://to-do-project-app.herokuapp.com/)
 ![todo.gif](https://github.com/neenad99/To-Do-App/blob/master/todo.gif)
