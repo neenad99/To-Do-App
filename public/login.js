@@ -8,7 +8,7 @@ function todoInitialize(){
     // const host =  enter your heroku app url here
     if (payload) {
     // If the payload is available then console.log the payload
-    console.log("Payload : " + payload);
+    
     let request = new Request(`${host}/${userId}`,{
         method:'POST',
         headers:{
@@ -21,7 +21,7 @@ function todoInitialize(){
         if(res.error != null){
             throw new Error(res.error);
         }
-        console.log("user added");
+       
         window.location.href = "/index";
     }).catch((err)=>{console.log("error in user login",err)}));
 
