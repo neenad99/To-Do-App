@@ -21,6 +21,18 @@ const TaskSchema = new mongoose.Schema({
     }
 });
 
-const Tasks = mongoose.model("Task",TaskSchema);
+const UserSchema = new mongoose.Schema({
+    user_id:{
+        type:String,
+        required:true
+    },
+    email:{
+        type:String,
+        required:true
+    },
+    todo:[TaskSchema]
+});
 
-module.exports = Tasks;
+const Users = mongoose.model("ToDo",UserSchema);
+
+module.exports = Users;

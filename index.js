@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const dotenv = require('dotenv').config();
 const path = require('path');
 const mongoose = require("mongoose");
-const Tasks = require('./models/TaskModel');
+const Users = require('./models/TaskModel');
 
 
 mongoose.connect(process.env.MONGO_DB_URL, {useNewUrlParser: true,useUnifiedTopology: true}).then(()=>{  
@@ -21,65 +21,155 @@ app.use(morgan('dev'));
 app.use(express.static(__dirname + '/public'));
 
 app.get('/',(req,res) =>{
+    res.sendFile(path.join(__dirname,'/public','login.html'));
+});
+
+app.get('/index',(req,res) =>{
     res.sendFile(path.join(__dirname,'/public','todo.html'));
 });
 
-app.get('/all',(req,res)=>{
-    Tasks.find()
-    .then((tasks)=>{
-        console.log('fetched all tasks');
-        res.statusCode = 200;
-        res.json({tasks:tasks,status:"success",message:"task fetched successfully"});
+app.post('/:userId',(req,res)=>{
+
+    Users.findOne({user_id:req.params.userId})
+    .then((user)=>{
+        if(user != null){
+            console.log("user already present");
+            res.statusCode = 200;
+            res.json({email:user.email,status:'success',message:"user already present"});
+        }
+        else{
+            Users.create(req.body)
+            .then((user)=>{
+                console.log("user added",user);
+                res.statusCode = 200;
+                res.json({status:'success',message:"user added to DB"});
+            })
+            .catch((err)=>{
+                console.log('failed to post user');
+                console.log(err);
+                res.statusCode = 500;
+                res.json({status:'fail',error:'some error occured try again'});
+            })
+        }
     })
     .catch((err)=>{
-        console.log('failed to fetch all memes\n');
+        console.log('failed to post user');
+        console.log(err);
+        res.statusCode = 500;
+        res.json({status:'fail',error:'some error occured try again'});
+    })
+});
+
+app.get('/:userId/all',(req,res)=>{
+    Users.findOne({user_id:req.params.userId})
+    .then((user)=>{
+        console.log('fetched user',user);
+        res.statusCode = 200;
+        res.json({tasks:user.todo,status:"success",message:"tasks fetched successfully"});
+    })
+    .catch((err)=>{
+        console.log('failed to fetch user\n');
         console.log(err);
         res.statusCode=500;
         res.json({status:'fail',error:'some error occured try again'});
-    })
+    });
 });
 
-app.post('/add',(req,res)=>{
-    Tasks.create(req.body)
-    .then((task)=>{
-        console.log("created task",task);
-        res.statusCode=201;
-        res.json({status:"success",message:"task added successfully"});
-    })
-    .catch((err)=>{
-        console.log("failed to post task",err);
-        res.statusCode=500;
-        res.json({status:'fail',error:'some error occured try again'});
-    })
-});
-
-
-app.put('/update/:taskId',(req,res)=>{
-    Tasks.findByIdAndUpdate({_id:req.params.taskId},{$set:req.body},{new:true,useFindAndModify:false})
-    .then((task)=>{
+app.post('/:userId/add',(req,res)=>{
+    Users.findOne({user_id:req.params.userId})
+    .then((user)=>{
+        console.log('fetched user',user);
         res.statusCode = 200;
-        res.json({status:"success",message:"task updated successfully"});
+        user.todo.push(req.body);
+        user.save()
+        .then(()=>{
+            console.log("task posted successfully",user);
+            res.json({status:"success",message:"tasks posted successfully"});  
+        })
+        .catch((err)=>{
+            console.log('failed to post task for user\n');
+            console.log(err);
+            res.statusCode=500;
+            res.json({status:'fail',error:'some error occured try again'});
+        });
     })
     .catch((err)=>{
-        console.log('failed to update task \n',err);
+        console.log('failed to fetch user\n');
+        console.log(err);
         res.statusCode=500;
         res.json({status:'fail',error:'some error occured try again'});
-    })
+    });
 });
 
-app.delete('/delete/:taskId',(req,res)=>{
-    const id = req.params.taskId;
-    Tasks.findByIdAndRemove(id, err => {
-        if (err){
-            console.log('failed to delete task \n',err);
-            res.statusCode = 500;
-            res.json({status:'fail',error:"some error occured try again"});
+
+app.put('/:userId/update/:taskId',(req,res)=>{
+
+    Users.findOne({user_id:req.params.userId})
+    .then((user)=>{
+        if(user.todo.id(req.params.taskId) != null){
+            console.log('fetched user',user);
+            res.statusCode = 200;
+
+            if(req.body.status != null){
+                user.todo.id(req.params.taskId).status = req.body.status;
+            }
+
+            user.save()
+            .then(()=>{
+                console.log("task updated successfully",user);
+                res.json({status:"success",message:"tasks updated successfully"});  
+            })
+            .catch((err)=>{
+                console.log('failed to update task for user\n');
+                console.log(err);
+                res.statusCode=500;
+                res.json({status:'fail',error:'some error occured try again'});
+            });
         }
         else{
-            res.statusCode = 200;
-            res.json({status:"success",message:"task deleted successfully"});
+            res.statusCode = 404;
+            throw new Error("todo not found");
         }
-})
+    })
+    .catch((err)=>{
+        console.log('failed to fetch user\n');
+        console.log(err);
+        res.statusCode=500;
+        res.json({status:'fail',error:'some error occured try again'});
+    });
+
+});
+
+app.delete('/:userId/delete/:taskId',(req,res)=>{
+    Users.findOne({user_id:req.params.userId})
+    .then((user)=>{
+        if(user.todo.id(req.params.taskId) != null){
+            console.log('fetched user',user);
+            res.statusCode = 200;
+            user.todo.id(req.params.taskId).remove();
+            user.save()
+            .then(()=>{
+                console.log("task updated successfully",user);
+                res.json({status:"success",message:"tasks updated successfully"});  
+            })
+            .catch((err)=>{
+                console.log('failed to update task for user\n');
+                console.log(err);
+                res.statusCode=500;
+                res.json({status:'fail',error:'some error occured try again'});
+            });
+        }
+        else{
+            res.statusCode = 404;
+            throw new Error("todo not found");
+        }
+    })
+    .catch((err)=>{
+        console.log('failed to fetch user\n');
+        console.log(err);
+        res.statusCode=500;
+        res.json({status:'fail',error:'some error occured try again'});
+    });
 });
 
 

@@ -1,8 +1,11 @@
+const payload = sessionStorage.getItem("payload");
+const userId = JSON.parse(payload).user_id;
+const userEmail = JSON.parse(payload).identifier;
 const addbtn = document.querySelector("#addTask");
+const logoutBtn = document.querySelector("#logout");
 const inputTask = document.querySelector('#inputTask');
 const tasklist = document.querySelector('#tasklist');
-
-// const host = "http://localhost:YOUR_PORT_NO"; enter your port no here for local setup
+const host = "http://localhost:3000"; 
 // const host =  enter your heroku app url here
 
 function showalert(message,status){
@@ -18,8 +21,13 @@ function showalert(message,status){
     setTimeout(() => document.querySelector('.alert').remove(),3000);
 }
 
+logoutBtn.addEventListener('click',(e)=>{
+    sessionStorage.removeItem("payload");
+    window.location.href = '/';
+});
+
 function getTasks(){
-    let request = new Request(`${host}/all`,{
+    let request = new Request(`${host}/${userId}/all`,{
         method:'GET',
         headers:{
             'Content-Type':'application/json'
@@ -70,7 +78,7 @@ addbtn.addEventListener('click',(e)=>{
         return ;
     }
 
-    let request = new Request(`${host}/add`,{
+    let request = new Request(`${host}/${userId}/add`,{
         method:'POST',
         headers:{
             'Content-Type':'application/json'
@@ -88,7 +96,7 @@ addbtn.addEventListener('click',(e)=>{
 tasklist.addEventListener('click',(e)=>{
     if(e.target.tagName === 'BUTTON'){
         if(e.target.innerText === 'Done'){
-            let request = new Request(`${host}/update/${e.target.id}`,{
+            let request = new Request(`${host}/${userId}/update/${e.target.id}`,{
                 method:'PUT',
                 headers:{
                     'Content-Type':'application/json'
@@ -104,7 +112,7 @@ tasklist.addEventListener('click',(e)=>{
             });
         }
         else{
-            let request = new Request(`${host}/delete/${e.target.id}`,{
+            let request = new Request(`${host}/${userId}/delete/${e.target.id}`,{
                 method:'DELETE',
                 headers:{
                     'Content-Type':'application/json'
