@@ -5,8 +5,8 @@ const addbtn = document.querySelector("#addTask");
 const logoutBtn = document.querySelector("#logout");
 const inputTask = document.querySelector('#inputTask');
 const tasklist = document.querySelector('#tasklist');
-const host = "https://to-do-project-app.herokuapp.com";  
-// const host =  enter your heroku app url here
+const host = ""; // enter your localhost with port no or your hosted url  
+
 
 function showalert(message,status){
     const div = document.createElement('div');

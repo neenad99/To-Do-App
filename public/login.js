@@ -4,8 +4,8 @@ function todoInitialize(){
     const userId = JSON.parse(payload).user_id;
     const userEmail = JSON.parse(payload).identifier;
     
-    const host = "https://to-do-project-app.herokuapp.com"; 
-    // const host =  enter your heroku app url here
+    const host = ""; // enter your localhost with port no or your hosted platform url
+    
     if (payload) {
     // If the payload is available then console.log the payload
     
@@ -45,7 +45,7 @@ function todoInitialize(){
    // can be one of 'email' or 'phone_number_sms'
    identifierType: "email",
    // Add the API key copied from 2nd step
-   apiKey: "ca130ee3-f7cd-468a-a722-864aee1caff8",
+   apiKey: "", // add your sawo api key
    // Add a callback here to handle the payload sent by sdk
    onSuccess: (payload) => {
      // Storing the payload in sessionStorage
