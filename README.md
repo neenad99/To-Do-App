@@ -25,7 +25,8 @@ Nodemon
 
 # Steps to configure project
 * First Run  ```npm install``` to install dependencies and ```npm install -d``` to install devdependencies
-* Edit .env file by filling PORT and create your cloud mongo DB and edit [MONGO_DB_URL](https://docs.atlas.mongodb.com/getting-started/) with your DB URL
+* Edit .env file by filling PORT NO and create your cloud mongo DB and edit [MONGO_DB_URL](https://docs.atlas.mongodb.com/getting-started/) with your DB URL
+* go to login.js in public folder and add [SAWO](https://dev.sawolabs.com/dash/projects) api key
 * Go to script.js in public folder and add your url in host variable according to from where you are running this app
 * Run by ``` npm start  ```
 
