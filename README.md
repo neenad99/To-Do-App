@@ -3,7 +3,7 @@ A To-do app using Nodejs , express , mongodb
 
 This repository contains code for To-do App using Nodejs , express , mongodb
 
-Technology used : -Nodejs -express 
+Technology used : -Nodejs -express -mongodb
 
 # Dependencies 
 
